@@ -46,41 +46,40 @@ window.onload = function () {
         }
         for (let i = 0; i < 3; ++i) {
             for (let j = 0; j < 3; ++j) {
-                if (x - i * 200 < 200 &&x - i * 200>0&& y - j * 200 < 200 &&y - j * 200 >0&& mt[j ][i ] == 0) {
+                if (x - i * 200 < 200 && x - i * 200 > 0 && y - j * 200 < 200 && y - j * 200 > 0 && mt[j][i] == 0) {
                     ctx.fillText(valueOfClick, 100 + i * 200, 100 + j * 200, 140);
                     mt[j][i] = valueOfMatrix
                     ++check
                 }
             }
         }
-
         if (check == 0) {
             --currentPlayer
         }
-        for(let i=0;i<3;++i){
-            let checkLine=0
+        for (let i = 0; i < 3; ++i) {
+            let checkLine = 0
             let checkColomn = 0
-            for (let j=0;j<3;++j){
-                checkLine+=mt[i][j]
-                checkColomn+=mt[j][i]
+            for (let j = 0; j < 3; ++j) {
+                checkLine += mt[i][j]
+                checkColomn += mt[j][i]
             }
-            if(checkLine==valueOfMatrix*3){
+            if (checkLine == valueOfMatrix * 3) {
                 ctx.beginPath();
-                ctx.moveTo(0, 100+i*200);
-                ctx.lineTo(600, 100+i*200);
+                ctx.moveTo(0, 100 + i * 200);
+                ctx.lineTo(600, 100 + i * 200);
                 ctx.stroke();
                 nIntervId = setInterval(outputWinner, 1000, valueOfClick)
                 currentPlayer = 10
-                i=4
+                i = 4
             }
-            if(checkColomn==valueOfMatrix*3){
+            if (checkColomn == valueOfMatrix * 3) {
                 ctx.beginPath();
-            ctx.moveTo(100+i*200, 0);
-            ctx.lineTo(100+i*200, 600);
-            ctx.stroke();
-            nIntervId = setInterval(outputWinner, 1000, valueOfClick)
-            currentPlayer = 10
-            i=4
+                ctx.moveTo(100 + i * 200, 0);
+                ctx.lineTo(100 + i * 200, 600);
+                ctx.stroke();
+                nIntervId = setInterval(outputWinner, 1000, valueOfClick)
+                currentPlayer = 10
+                i = 4
             }
         }
         if (mt[0][0] == mt[1][1] && mt[1][1] == mt[2][2] && mt[2][2] != 0) {
