@@ -28,9 +28,10 @@ window.onload = function () {
     secondCanvas.addEventListener("click", function (event) {
         const ctx = secondCanvas.getContext("2d");
         ctx.font = "130px sans-serif";
-        ctx.textBaseline = "hanging"
+        ctx.textBaseline = "middle"
+        ctx.textAlign = "center";
         ++currentPlayer
-        let valueOfMatrix = 2
+        let valueOfMatrix = 4
         let valueOfClick = "X"
         let check = 0
         if (currentPlayer % 2 == 0) {
@@ -43,95 +44,46 @@ window.onload = function () {
             restart()
             return;
         }
-        if (x < 200 && x > 0) {
-            if (y < 200 && mt[0][0] == 0) {
-                ctx.fillText(valueOfClick, 60, 60, 140);
-                mt[0][0] = valueOfMatrix
-                ++check
-            } else if (y > 200 && y < 400 && mt[1][0] == 0) {
-                ctx.fillText(valueOfClick, 60, 260, 140);
-                mt[1][0] = valueOfMatrix
-                ++check
-            } else if (y > 400 && mt[2][0] == 0) {
-                ctx.fillText(valueOfClick, 60, 460, 140);
-                mt[2][0] = valueOfMatrix
-                ++check
-            }
-        } else if (x > 200 && x < 400) {
-            if (y < 200 && mt[0][1] == 0) {
-                ctx.fillText(valueOfClick, 260, 60, 140);
-                mt[0][1] = valueOfMatrix
-                ++check
-            } else if (y > 200 && y < 400 && mt[1][1] == 0) {
-                ctx.fillText(valueOfClick, 260, 260, 140);
-                mt[1][1] = valueOfMatrix
-                ++check
-            } else if (y > 400 && mt[2][1] == 0) {
-                ctx.fillText(valueOfClick, 260, 460, 140);
-                mt[2][1] = valueOfMatrix
-                ++check
-            }
-        } else if (x > 400) {
-            if (y < 200 && mt[0][2] == 0) {
-                ctx.fillText(valueOfClick, 460, 60, 140);
-                mt[0][2] = valueOfMatrix
-                ++check
-            } else if (y > 200 && y < 400 && mt[1][2] == 0) {
-                ctx.fillText(valueOfClick, 460, 260, 140);
-                mt[1][2] = valueOfMatrix
-                ++check
-            } else if (y > 400 && mt[2][2] == 0) {
-                ctx.fillText(valueOfClick, 460, 460, 140);
-                mt[2][2] = valueOfMatrix
-                ++check
+        for (let i = 0; i < 3; ++i) {
+            for (let j = 0; j < 3; ++j) {
+                if (x - i * 200 < 200 &&x - i * 200>0&& y - j * 200 < 200 &&y - j * 200 >0&& mt[j ][i ] == 0) {
+                    ctx.fillText(valueOfClick, 100 + i * 200, 100 + j * 200, 140);
+                    mt[j][i] = valueOfMatrix
+                    ++check
+                }
             }
         }
+
         if (check == 0) {
             --currentPlayer
         }
-        if (mt[0][1] == mt[0][2] && mt[0][1] == mt[0][0] && mt[0][0] != 0) {
-            ctx.beginPath();
-            ctx.moveTo(0, 100);
-            ctx.lineTo(600, 100);
+        for(let i=0;i<3;++i){
+            let checkLine=0
+            let checkColomn = 0
+            for (let j=0;j<3;++j){
+                checkLine+=mt[i][j]
+                checkColomn+=mt[j][i]
+            }
+            if(checkLine==valueOfMatrix*3){
+                ctx.beginPath();
+                ctx.moveTo(0, 100+i*200);
+                ctx.lineTo(600, 100+i*200);
+                ctx.stroke();
+                nIntervId = setInterval(outputWinner, 1000, valueOfClick)
+                currentPlayer = 10
+                i=4
+            }
+            if(checkColomn==valueOfMatrix*3){
+                ctx.beginPath();
+            ctx.moveTo(100+i*200, 0);
+            ctx.lineTo(100+i*200, 600);
             ctx.stroke();
             nIntervId = setInterval(outputWinner, 1000, valueOfClick)
             currentPlayer = 10
-        } else if (mt[1][1] == mt[1][2] && mt[1][1] == mt[1][0] && mt[1][0] != 0) {
-            ctx.beginPath();
-            ctx.moveTo(0, 300);
-            ctx.lineTo(600, 300);
-            ctx.stroke();
-            nIntervId = setInterval(outputWinner, 1000, valueOfClick)
-            currentPlayer = 10
-        } else if (mt[2][1] == mt[2][2] && mt[2][1] == mt[2][0] && mt[2][0] != 0) {
-            ctx.beginPath();
-            ctx.moveTo(0, 500);
-            ctx.lineTo(600, 500);
-            ctx.stroke();
-            nIntervId = setInterval(outputWinner, 1000, valueOfClick)
-            currentPlayer = 10
-        } else if (mt[1][0] == mt[2][0] && mt[1][0] == mt[0][0] && mt[0][0] != 0) {
-            ctx.beginPath();
-            ctx.moveTo(100, 0);
-            ctx.lineTo(100, 600);
-            ctx.stroke();
-            nIntervId = setInterval(outputWinner, 1000, valueOfClick)
-            currentPlayer = 10
-        } else if (mt[1][1] == mt[2][1] && mt[1][1] == mt[0][1] && mt[0][1] != 0) {
-            ctx.beginPath();
-            ctx.moveTo(300, 0);
-            ctx.lineTo(300, 600);
-            ctx.stroke();
-            nIntervId = setInterval(outputWinner, 1000, valueOfClick)
-            currentPlayer = 10
-        } else if (mt[1][2] == mt[2][2] && mt[1][2] == mt[0][2] && mt[0][2] != 0) {
-            ctx.beginPath();
-            ctx.moveTo(500, 0);
-            ctx.lineTo(500, 600);
-            ctx.stroke();
-            nIntervId = setInterval(outputWinner, 1000, valueOfClick)
-            currentPlayer = 10
-        } else if (mt[0][0] == mt[1][1] && mt[1][1] == mt[2][2] && mt[2][2] != 0) {
+            i=4
+            }
+        }
+        if (mt[0][0] == mt[1][1] && mt[1][1] == mt[2][2] && mt[2][2] != 0) {
             ctx.beginPath();
             ctx.moveTo(0, 0);
             ctx.lineTo(600, 600);
@@ -165,7 +117,7 @@ function outputWinner(win) {
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillText("Castigatorul este " + win, 50, 200, 440);
+    ctx.fillText("Castigatorul este " + win, 300, 300, 440);
     clearInterval(nIntervId);
     nIntervId = null
 }
@@ -174,5 +126,5 @@ function outputTiht() {
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillText("Egalitate", 50, 200, 440);
+    ctx.fillText("Egalitate", 300, 300, 440);
 }
