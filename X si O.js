@@ -1,4 +1,5 @@
 let interval = setInterval(draw, 1)
+
 function draw() {
     const canvas = document.getElementById("canvas");
     if (canvas.getContext) {
@@ -19,10 +20,12 @@ function draw() {
     }
 
 }
-const cellSize=200;
+
+const cellSize = 200;
 let currentPlayer = 0;
 let mt = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 let nIntervId;
+
 window.onload = function () {
     var secondCanvas = document.getElementById("canvas");
     secondCanvas.addEventListener("click", function (event) {
@@ -44,63 +47,81 @@ window.onload = function () {
             restart()
             return;
         }
-        for (let i = 0; i < 3; ++i) {
-            for (let j = 0; j < 3; ++j) {
-                if (x - i * cellSize < cellSize && x - i * cellSize > 0 && y - j * cellSize < cellSize && y - j * cellSize > 0 && mt[j][i] == 0) {
-                    ctx.fillText(valueOfClick, cellSize/2 + i * cellSize, cellSize/2 + j * cellSize, 140);
-                    mt[j][i] = valueOfMatrix
-                    ++check
-                }
-            }
-        }
-        if (check == 0) {
-            --currentPlayer
-        }
-        for (let i = 0; i < 3; ++i) {
-            let checkLine = 0
-            let checkColomn = 0
-            for (let j = 0; j < 3; ++j) {
-                checkLine += mt[i][j]
-                checkColomn += mt[j][i]
-            }
-            if (checkLine == valueOfMatrix * 3) {
-                ctx.beginPath();
-                ctx.moveTo(0, cellSize/2 + i * cellSize);
-                ctx.lineTo(cellSize*3, cellSize/2 + i * cellSize);
-                ctx.stroke();
-                nIntervId = setInterval(outputWinner, 1000, valueOfClick)
-                currentPlayer = 10
-                i = 4
-            }
-            if (checkColomn == valueOfMatrix * 3) {
-                ctx.beginPath();
-                ctx.moveTo(cellSize/2 + i * cellSize, 0);
-                ctx.lineTo(cellSize/2 + i * cellSize, cellSize*3);
-                ctx.stroke();
-                nIntervId = setInterval(outputWinner, 1000, valueOfClick)
-                currentPlayer = 10
-                i = 4
-            }
-        }
-        if (mt[0][0] == mt[1][1] && mt[1][1] == mt[2][2] && mt[2][2] != 0) {
-            ctx.beginPath();
-            ctx.moveTo(0, 0);
-            ctx.lineTo(600, 600);
-            ctx.stroke();
-            nIntervId = setInterval(outputWinner, 1000, valueOfClick)
-            currentPlayer = 10
-        } else if (mt[2][0] == mt[1][1] && mt[2][0] == mt[0][2] && mt[0][2] != 0) {
-            ctx.beginPath();
-            ctx.moveTo(600, 0);
-            ctx.lineTo(0, 600);
-            ctx.stroke();
-            nIntervId = setInterval(outputWinner, 1000, valueOfClick)
-            currentPlayer = 10
-        } else if (currentPlayer == 9) {
-            outputTiht()
-            currentPlayer = 10
-        }
+        fillCell(x, y, ctx, valueOfClick, valueOfMatrix, check)
+        checkColomnAndLine(ctx, valueOfClick, valueOfMatrix)
+        checkDiagonals(ctx, valueOfClick)
+        checkTiht()
+
     })
+}
+
+function fillCell(x, y, ctx, valueOfClick, valueOfMatrix, check) {
+    for (let i = 0; i < 3; ++i) {
+        for (let j = 0; j < 3; ++j) {
+            if (x - i * cellSize < cellSize && x - i * cellSize > 0 && y - j * cellSize < cellSize && y - j * cellSize > 0 && mt[j][i] == 0) {
+                ctx.fillText(valueOfClick, cellSize / 2 + i * cellSize, cellSize / 2 + j * cellSize, 140);
+                mt[j][i] = valueOfMatrix
+                ++check
+            }
+        }
+    }
+    if (check == 0) {
+        --currentPlayer
+    }
+}
+
+function checkColomnAndLine(ctx, valueOfClick, valueOfMatrix) {
+    for (let i = 0; i < 3; ++i) {
+        let checkLine = 0
+        let checkColomn = 0
+        for (let j = 0; j < 3; ++j) {
+            checkLine += mt[i][j]
+            checkColomn += mt[j][i]
+        }
+        if (checkLine == valueOfMatrix * 3) {
+            ctx.beginPath();
+            ctx.moveTo(0, cellSize / 2 + i * cellSize);
+            ctx.lineTo(cellSize * 3, cellSize / 2 + i * cellSize);
+            ctx.stroke();
+            nIntervId = setInterval(outputWinner, 1000, valueOfClick)
+            currentPlayer = 10
+            i = 4
+        }
+        if (checkColomn == valueOfMatrix * 3) {
+            ctx.beginPath();
+            ctx.moveTo(cellSize / 2 + i * cellSize, 0);
+            ctx.lineTo(cellSize / 2 + i * cellSize, cellSize * 3);
+            ctx.stroke();
+            nIntervId = setInterval(outputWinner, 1000, valueOfClick)
+            currentPlayer = 10
+            i = 4
+        }
+    }
+}
+
+function checkDiagonals(ctx, valueOfClick) {
+    if (mt[0][0] == mt[1][1] && mt[1][1] == mt[2][2] && mt[2][2] != 0) {
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(600, 600);
+        ctx.stroke();
+        nIntervId = setInterval(outputWinner, 1000, valueOfClick)
+        currentPlayer = 10
+    } else if (mt[2][0] == mt[1][1] && mt[2][0] == mt[0][2] && mt[0][2] != 0) {
+        ctx.beginPath();
+        ctx.moveTo(600, 0);
+        ctx.lineTo(0, 600);
+        ctx.stroke();
+        nIntervId = setInterval(outputWinner, 1000, valueOfClick)
+        currentPlayer = 10
+    }
+}
+
+function checkTiht() {
+    if (currentPlayer == 9) {
+        outputTiht()
+        currentPlayer = 10
+    }
 }
 
 function restart() {
@@ -112,7 +133,8 @@ function restart() {
     draw()
 }
 
-const middleOfCanvas=300
+const middleOfCanvas = 300
+
 function outputWinner(win) {
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
