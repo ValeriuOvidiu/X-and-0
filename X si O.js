@@ -16,9 +16,7 @@ function draw() {
         ctx.stroke();
         clearInterval(interval)
         interval = null;
-
     }
-
 }
 
 const cellSize = 200;
@@ -51,7 +49,6 @@ window.onload = function () {
         checkColomnAndLine(ctx, valueOfClick, valueOfMatrix)
         checkDiagonals(ctx, valueOfClick)
         checkTiht()
-
     })
 }
 
