@@ -25,7 +25,7 @@ let mt = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 let nIntervId;
 
 window.onload = function () {
-    var secondCanvas = document.getElementById("canvas");
+    const secondCanvas = document.getElementById("canvas");
     secondCanvas.addEventListener("click", function (event) {
         const ctx = secondCanvas.getContext("2d");
         ctx.font = "130px sans-serif";
@@ -39,8 +39,8 @@ window.onload = function () {
             valueOfClick = "0"
             valueOfMatrix = 1
         }
-        var x = event.offsetX
-        var y = event.offsetY
+        const x = event.offsetX
+        const y = event.offsetY
         if (currentPlayer == 11) {
             restart()
             return;
@@ -48,7 +48,8 @@ window.onload = function () {
         fillCell(x, y, ctx, valueOfClick, valueOfMatrix, check)
         checkColomnAndLine(ctx, valueOfClick, valueOfMatrix)
         checkDiagonals(ctx, valueOfClick)
-        checkTiht()
+        tiedCheck()
+
     })
 }
 
@@ -114,9 +115,9 @@ function checkDiagonals(ctx, valueOfClick) {
     }
 }
 
-function checkTiht() {
+function tiedCheck() {
     if (currentPlayer == 9) {
-        outputTiht()
+        tiedOutput()
         currentPlayer = 10
     }
 }
@@ -141,7 +142,7 @@ function outputWinner(win) {
     nIntervId = null
 }
 
-function outputTiht() {
+function tiedOutput() {
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
